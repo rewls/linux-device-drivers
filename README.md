@@ -18,6 +18,8 @@
 
 - This book should be an interesting source of information both for people who want to experiment with their computer and for technical programmers who face the need to deal with the inner levels of a Linux box.
 
+- We hope this book is useful as a starting point for people who want to become kernel hackers but don't know where to start.
+
 - This book does not cover the Linux kernel in its entirety, of course, but Linux device driver authors need to know how to work with many of the kernel's subsystems.
 
 - If you don't want to go deep into the details, you can just skip the most technical sections, and stick to the standard API used by device drivers to seamlessly integrate with the rest of the kernel.
@@ -52,7 +54,7 @@
 
 ## Contents
 
-- [ ] 1. An Introduction to Device Drivers ... 1
+- [x] [1. An Introduction to Device Drivers](01-an-introduction-to-device-drivers.md) ... 1
 
 - [ ] 2. Building and Running Modules ... 15
 

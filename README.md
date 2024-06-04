@@ -56,7 +56,7 @@
 
 - [x] [1. An Introduction to Device Drivers](01-an-introduction-to-device-drivers.md) ... 1
 
-- [ ] 2. Building and Running Modules ... 15
+- [x] [2. Building and Running Modules](02-building-and-running-modules) ... 15
 
 - [ ] 3. Char Drivers ... 42
 

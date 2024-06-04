@@ -66,9 +66,19 @@
 
         - Almost every system operation eventually maps to a physical device.
 
+        - With the exception of the processor, memory, anda very few other entities, any and all device control operations are performed by code thatis specific to the device being addressed.
+
+        - That code is called a *device driver*.
+
+        - The kernel must have embedded in it a device driver for every peripheral presend on a system, from the hard drive to the keyboard and the tape drive.
+
     - Networking
 
         - Networking must be managed by the operating system, because most network operations are not specific to a process: incomming packets are asynchronous events.
+
+        - The system is in charge of delivering delivering data packets across program and network interfaces, and it must control the execution of programs according to their network activity.
+
+        - Additionally, all the routing and address resolution issues are implemented within the kernel.
 
 ### Loadable Modules
 
@@ -199,6 +209,12 @@
 - Additionally, any software product derived from a product covered by the GPL must, if it is redistributed at all, be released under the GPL.
 
 - As far as this book is concerned, most of the code is freely redistributable, either in source or binary form, and neither we nor O’Reilly retain any right on any derived works.
+
+- Distribution of binary modules—as long as they adhere to the published kernel interface—has been tolerated so far.
+
+- But the copyrights on the kernel are held by many developers, and not all of them agree that kernel modules are not derived products.
+
+- If you or your employer wish to distribute kernel modules under a nonfree license, you really need to discuss the situation with your legal counsel.
 
 ## Joining the Kernel Development Community
 

@@ -787,7 +787,7 @@ rent access to a device.
 
     - If you must write a closed-source driver, the user-space option makes it easier for you to avoid ambiguous licensing situations and problems with changing kernel interface.
 
-- For example, USB drivers can be written for user space; see the (still young) libusb project at libusb.sourceforge.net and “gadgetfs” in the kernel source.
+- For example, USB drivers can be written for user space; see the (still young) libusb project at libusb.sourceforge.net and “gadgets” in the kernel source.
 
 - Another example is the X server: it knows exactly what the hardware can do and what it can’t, and it offers the graphic resources to all X clients.
 

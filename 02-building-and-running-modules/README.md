@@ -76,7 +76,7 @@ $ su
 
 > ##### Figure 2-1. Linking a module to the kernel
 >
-> ![figure2-1](images/figure2-1.png)
+> ![figure-02-1](../images/figure-02-1.png)
 
 - Because no library is linked to modules, source files should never include the usual header files, *<stdarg.h>* and very special situations being the only exceptions.
 
@@ -178,13 +178,13 @@ $ su
 
 - Thus, it is never a good idea to declare large automatic variables; if you need larger structures, you should allocate them dynamically at call time.
 
-- You will encounter functions names starting with a double underscore (`__`).
+- You will encounter function names starting with a double underscore (`__`).
 
 - functions so marked are generally a low-level component of the interface and should be used with caution.
 
 - Kernel code cannot do floating point arithmetic.
 
-- Enabling floating point would require that the kernel save and restore the floating point processor's state on each entry to, and exit form, kernel apce -- at least, on some architectures.
+- Enabling floating point would require that the kernel save and restore the floating point processor's state on each entry to, and exit from, kernel space -- at least, on some architectures.
 
 - Given that there really is no need for floating point in kernel code, the extra overhead is not worthwhile.
 
@@ -204,7 +204,7 @@ $ su
 
 - Trying to build a kernel with the wrong tool versions can lead to no end of subtle, difficult problems.
 
-- The kernel source makes a great many assumptions about the compiler, and new releases cana sometimes break things for a while.
+- The kernel source makes a great many assumptions about the compiler, and new releases can sometimes break things for a while.
 
 - You cannot build loadable modules for a 2.6 kernel without this tree on your filesystem.
 
@@ -212,9 +212,11 @@ $ su
 
 - In fact, for the "hello world" example shown earlier in this chapter, a single line will suffice:
 
-```makefile
-obj-m := hello.o
-```
+    ```makefile
+    obj-m := hello.o
+    ```
+
+- The kernel build system handles the rest.
 
 - The assignment above states that there is one module to be built from the object file *hello.o*.
 
@@ -222,18 +224,18 @@ obj-m := hello.o
 
 - If, instead, you have a module called *module.ko* that is generated from two source files, the correct incantation would be:
 
-```makefile
-obj-m := module.o
-module-obj := file1.o file2.o
-```
+    ```makefile
+    obj-m := module.o
+    module-obj := file1.o file2.o
+    ```
 
 - For a makefile like those shown above to work, it must be invoked within the context of the larger kernel build system.
 
 - If your kernel source tree is located in, say, your *~/kernel-2.6* directory, the *make* command required to build your module would be:
 
-```shell
-$ make -C ~/kernel-2.6 M=`pwd` modules
-```
+    ```shell
+    $ make -C ~/kernel-2.6 M=`pwd` modules
+    ```
 
 - This command starts by changing its directory to the one provided with the `-C` option.
 
@@ -245,23 +247,23 @@ $ make -C ~/kernel-2.6 M=`pwd` modules
 
 - Typing the previous *make* command can get tiresome after a while, so the kernel developers have developed a sort of makefile idiom, which makes life easier for those building modules outside of the kernel tree.
 
-```makefile
-# If KERNELRELEASE is defined, we've been  invoked from the kernel build system
-# and can use its language.
-ifneq ($(KERNELRELEASE),)
-    obj-m := hello.o
+    ```makefile
+    # If KERNELRELEASE is defined, we've been invoked from the kernel build system
+    # and can use its language.
+    ifneq ($(KERNELRELEASE),)
+        obj-m := hello.o
 
-# Otherwise we were called directly from the command line; invoke the kernel
-#build syhstem..
-else
-    KERNELDIR ?= /lib/modules/$(shell uname -r)/build
-    PWD := $(shell pwd)
+    # Otherwise we were called directly from the command line; invoke the kernel
+    #build syhstem..
+    else
+        KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+        PWD := $(shell pwd)
 
-default:
-    $(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+    default:
+        $(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
-endif
-```
+    endif
+    ```
 
 - We are seeing the extended GNU *make* syntax in action.
 
@@ -293,7 +295,7 @@ endif
 
 - Interested readers may want to look at how the kernel supports *insmod*: it relies on a system call defined in *kernel/module.c*.
 
-- the function *sys_init_module* allocates kernel memory to hold a module (this memory is allocated with *vmalloc*; see the section "vmalloc and Friends" in Chapter 8); it then copies the module text into the memory region, resolves kernel references in the module via the kernel symbol table, and calls the module's initialization function to get everything going.
+- The function *sys_init_module* allocates kernel memory to hold a module (this memory is allocated with *vmalloc*; see the section "vmalloc and Friends" in Chapter 8); it then copies the module text into the memory region, resolves kernel references in the module via the kernel symbol table, and calls the module's initialization function to get everything going.
 
 - If you actually look in the kernel source, you'll find that the names of the system calles are prefixed with `sys_`.
 
@@ -339,9 +341,9 @@ endif
 
 - If things don't match, the module is not loaded.
 
-- A look in the system log file will reveal the specific problem that caused the module to fail to load.
+- A look in the system log file (*/var/log/messages* or whatever your system is configured to use) will reveal the specific problem that caused the module to fail to load.
 
-- If you need to compile a module for a specific kernel version, you will need to use the build system and wource tree for that particular version.
+- If you need to compile a module for a specific kernel version, you will need to use the build system and source tree for that particular version.
 
 - A simple change to the `KERNELDIR` variable in the example makefile shown previously does the trick.
 
@@ -357,9 +359,9 @@ endif
 
         - This macro expands to a string describing the version of tihs kernel tree.
 
-    - `LINUX_VERSION_CODE
+    - `LINUX_VERSION_CODE`
 
-        - This macro expands to the binary representation of the kernel version, one byte for wach part of the version release number.
+        - This macro expands to the binary representation of the kernel version, one byte for each part of the version release number.
 
     - `KERNEL_VERSION(major, minor, release)`
 
@@ -419,7 +421,7 @@ endif
 
 > ##### Figure 2-2. Stacking of parallel port driver modules.
 >
-> ![figure2-2](images/figure2-2.png)
+> ![figure-02-2](../images/figure02-2.png)
 
 - When using stacked modules, it is helpful to be aware of the *modprobe* utility.
 
@@ -429,12 +431,12 @@ endif
 
 - If your module needs to export symbols for other modules to use, the following macros should be used.
 
-```shell
-EXPORT_SYMBOL(name);
-EXPORT_SYMBOL_GPL(name);
-```
+    ```shell
+    EXPORT_SYMBOL(name);
+    EXPORT_SYMBOL_GPL(name);
+    ```
 
-- Either of the aboce macros makes the given symbol available outside the module.
+- Either of the above macros makes the given symbol available outside the module.
 
 - Symbols must be exported in the global part of the module's file, because the macros expand to the declaration of a special-purpose variable that is expected to be accessible globally.
 
@@ -448,12 +450,18 @@ EXPORT_SYMBOL_GPL(name);
 
 - The kernel is a unique environment, and it imposes its own requirements on code that would interface with it.
 
-- Then, just about all module code has the following:
+<br>
 
-```c
-#include <linux/module.h>
-#include <linux/init.h>
-```
+- Most kernel code ends up including a fairly large number of header files to get definitions of functions, data types, and variables.
+
+- We'll examine these files as we come to them, but there are a few that are specific to modules, and must appear in every loadable module.
+
+- Thus, just about all module code has the following:
+
+    ```c
+    #include <linux/module.h>
+    #include <linux/init.h>
+    ```
 
 - *module.h* contains a great many definitions of symbols and functions needed by loadable modules.
 
@@ -461,19 +469,25 @@ EXPORT_SYMBOL_GPL(name);
 
 - Most modules also include *moduleparam.h* to enable the passing of parameters to the module at load time; we will get to that shortly.
 
+<br>
+
 - It is not strictly necessary, but your module really should specify which license applies to its code.
 
-```c
-MODULE_LICENSE("GPL");
-```
+    ```c
+    MODULE_LICENSE("GPL");
+    ```
 
 - The specific licenses recognized by the kernel are "GPL", "GPL v2", "GPL and additional rights," "Dual BSD/GPL," "Dual MPL/GPL," and "Proprietary."
+
+<br>
 
 - Other descriptive definitions that can be contained within a module include `MODULE_AUTHOR`, `MODULE_DESCRIPTION`, `MODULE_VERSION` (see the comments in <linux/module.h> for the conventions to use in creating version strings), `MODULE_ALIAS`, and `MODULE_DEVICE_TABLE` (to tell user space about which devices the module supports).
 
 - We’ll discuss `MODULE_ALIAS` in Chapter 11 and `MODULE_DEVICE_TABLE` in Chapter 12.
 
-- The various MODULE_ declarations can appear anywhere within your source file outside of a function.
+<br>
+
+- The various `MODULE_` declarations can appear anywhere within your source file outside of a function.
 
 - A relatively recent convention in kernel code, however, is to put these declarations at the end of the file.
 
@@ -495,8 +509,7 @@ module_init(initialization_function);
 
 - Initialization functions should be declared `static`, since they are not meant to be visible outside the specific file; there is no hard rule about this, though, as no function is exported to the rest of the kernel unless explicitly requested.
 
-- The `__init` token in the definition may look a little strange; it is a hint to the kernel that the given function is
-used only at initialization time.
+- The `__init` token in the definition may look a little strange; it is a hint to the kernel that the given function is used only at initialization time.
 
 - The module loader drops the initialization function after the module is loaded, making its memory available for other uses.
 
@@ -506,19 +519,35 @@ used only at initialization time.
 
 - We will look at hotplug support in Chapter 14.
 
+<br>
+
 - The use of *module_init* is mandatory.
 
 - This macro adds a special section to the module’s object code stating where the module’s initialization function is to be found.
 
 - Without this definition, your initialization function is never called.
 
+<br>
+
+- Modules can register many different types of facilities, including different kinds of devices, filesystems, cryptographic transforms, and more.
+
 - For each facility, there is a specific kernel function that accomplishes this registration.
 
 - The arguments passed to the kernel registration functions are usually pointers to data structures describing the new facility and the name of the facility being registered.
 
+- The data structure usually contains pointers to module functions, which is how functions in the module body get called.
+
+<br>
+
+- The items that can be registered go beyond the list of device types mentioned in Chapter 1.
+
+- They include, among others, serial ports, miscellaneous devices, sysfs entries, */proc* files, executable domains, and line disciplines.
+
 - Many of those registrable items support functions that aren’t directly related to hardware but remain in the "software abstractions" field.
 
 - Those items can be registered, because they are integrated into the driver’s functionality anyway (like */proc* files and line disciplines for example).
+
+<br>
 
 - There are other facilities that can be registered as add-ons for certain drivers, but their use is so specific that it’s not worth talking about them; they use the stacking technique, as described in the section "The Kernel Symbol Table".
 
@@ -549,6 +578,8 @@ module_exit(cleanup_function);
 
 - Once again, the *module_exit* declaration is necessary to enable to kernel to find your cleanup function.
 
+<br>
+
 - If your module does not define a cleanup function, the kernel does not allow it to be unloaded.
 
 ### Error Handling During Initialization
@@ -557,11 +588,15 @@ module_exit(cleanup_function);
 
 - So module code must always check return values, and be sure that the requested operations have actually succeeded.
 
+<br>
+
 - If any errors occur when you register utilities, the first order of business is to decide whether the module can continue initializing itself anyway.
 
 - Often, the module can continue to operate after a registration failure, with degraded functionality if necessary.
 
 - Whenever possible, your module should press forward and provide what capabilities it can after things fail.
+
+<br>
 
 - If it turns out that your module simply cannot load after a particular type of failure, you must undo any registration activities performed before the failure.
 
@@ -571,6 +606,8 @@ module_exit(cleanup_function);
 
 - In such situations, the only recourse, usually, is to reboot the system.
 
+<br>
+
 - Error recovery is sometimes best handled with the `goto` statement.
 
 - We normally hate to use `goto`, but in our opinion, this is one situation where it is useful.
@@ -579,36 +616,42 @@ module_exit(cleanup_function);
 
 - Thus, in the kernel, `goto` is often used as shown here to deal with errors.
 
+<br>
+
 - The following sample code behaves correctly if initialization fails at any point:
 
-```c
-int __init my_init_function(void)
-{
-	int err;
+    ```c
+    int __init my_init_function(void)
+    {
+        int err;
 
-	/* registration takes a pointer and a name */
-	err = register_this(ptr1, "skull");
-	if (err) goto fall_this.
-	err = register_this(ptr2, "skull");
-	if (err) goto fall_that.
-	err = register_this(ptr3, "skull");
-	if (err) goto fall_those.
+        /* registration takes a pointer and a name */
+        err = register_this(ptr1, "skull");
+        if (err) goto fall_this.
+        err = register_this(ptr2, "skull");
+        if (err) goto fall_that.
+        err = register_this(ptr3, "skull");
+        if (err) goto fall_those.
 
-	return 0; /* success */
+        return 0; /* success */
 
-fall_those: unregister_that(ptr2, "skull");
-fall_that: unregister_this(ptr1, "skull");
-fall_this: return err; /* propagate the error */
-}
-```
+    fall_those: unregister_that(ptr2, "skull");
+    fall_that: unregister_this(ptr1, "skull");
+    fall_this: return err; /* propagate the error */
+    }
+    ```
 
 - The `goto` statement is used in case of failure to cause the unregistration of only the facilities that had been successfully registered before things went bad.
+
+<br>
 
 - Another option, requiring no hairy `goto` statements, is keeping track of what has been successfully registered and calling your module’s cleanup function in case of any error.
 
 - The cleanup function unrolls only the steps that have been successfully accomplished.
 
 - This alternative, however, requires more code and more CPU time, so in fast paths you still resort to `goto` as the best error-recovery tool.
+
+<br>
 
 - The return value of *my_init_function*, `err`, is an error code.
 
@@ -618,9 +661,13 @@ fall_this: return err; /* propagate the error */
 
 - It is always good practice to return appropriate error codes, because user programs can turn them to meaningful strings using *perror* or similar means.
 
+<br>
+
 - Obviously, the module cleanup function must undo any registration performed by the initialization function, and it is customary (but not usually mandatory) to unregister facilities in the reverse order used to register them.
 
 - If your initialization and cleanup are more complex than dealing with a few items, the `goto` approach may become difficult to manage, because all the cleanup code must be repeated within the initialization function, with several labels intermixed.
+
+<br>
 
 - What you’d do to minimize code duplication and keep everything streamlined is to call the cleanup function from within the initialization whenever an error occurs.
 
@@ -628,43 +675,43 @@ fall_this: return err; /* propagate the error */
 
 - In its simplest form, the code looks like the following:
 
-```c
-struct something *item1;
-struct somethingelse *item2;
-int stuff_ok;
+    ```c
+    struct something *item1;
+    struct somethingelse *item2;
+    int stuff_ok;
 
-void my_cleanup(void)
-{
-	if (item1)
-	    release_thin(item1);
-	if (item2)
-	    release_thin(item1);
-	if (stuff_ok)
-		unregister_stuff();
-	return;
-}
+    void my_cleanup(void)
+    {
+        if (item1)
+            release_thing(item1);
+        if (item2)
+            release_thing2(item1);
+        if (stuff_ok)
+            unregister_stuff();
+        return;
+    }
 
-int __init my_init(void)
-{
-	int err = -ENOMEM;
-	
-	item1 = allocate_thing(arguments);
-	item2 = allocate_thing(arguments2);
-	if (!item || !item2)
-		goto fail;
-	err = register_stuff(item1, item2);
-	if (!err)
-		stuff_ok = 1;
-	else
-		goto fail;
-	return 0; /* success */
-fail:
-	my_cleanup();
-	return err;
-}
-```
+    int __init my_init(void)
+    {
+        int err = -ENOMEM;
+        
+        item1 = allocate_thing(arguments);
+        item2 = allocate_thing(arguments2);
+        if (!item || !item2)
+            goto fail;
+        err = register_stuff(item1, item2);
+        if (!err)
+            stuff_ok = 1;
+        else
+            goto fail;
+        return 0; /* success */
+    fail:
+        my_cleanup();
+        return err;
+    }
+    ```
 
-- You may or may not need external flags to mark success of the initialization step, depending on the semantics of the registration/allocation function you call. 
+- As shown this code, you may or may not need external flags to mark success of the initialization step, depending on the semantics of the registration/allocation function you call. 
 
 - The cleanup function cannot be marked `__exit` when it is called by nonexit code.
 
@@ -672,9 +719,13 @@ fail:
 
 - We will discuss race conditions later in this book; for now, a couple of quick points will have to suffice.
 
+<br>
+
 - The first is that you should always remember that some other part of the kernel can make use of any facility you register immediately after that registration has completed.
 
 - Do not register any facility until all of your internal initialization needed to support that facility has been completed.
+
+<br>
 
 - You must also consider what happens if your initialization function decides to fail, but some part of the kernel is already making use of a facility your module has registered.
 
@@ -688,11 +739,15 @@ fail:
 
 - The kernel supports these needs by making it possible for a driver to designate parameters that may be changed when the driver’s module is loaded.
 
+<br>
+
 - These parameter values can be assigned at load time by *insmod* or *modprobe*; the latter can also read parameter assignment from its configuration file (*/etc/modprobe.conf*).
 
 ```shell
-insmod hellop howmany=10 whom="Mom"
+# insmod hellop.ko howmany=10 whom="Mom"
 ```
+
+<br>
 
 - However, before *insmod* can change module parameters, the module must make them available.
 
@@ -742,11 +797,15 @@ versa
 
 - The module loader refuses to accept more values than will fit in the array.
 
+<br>
+
 - If you really need a type that does not appear in the list above, there are hooks in the module code that allow you to define them; see *moduleparam.h* for details on how to do that.
 
 - All module parameters should be given a default value; *insmod* changes the value only if explicitly told to by the user.
 
 - The module can check for explicit parameters by testing parameters against their default values.
+
+<br>
 
 - The final *module_param* field is a permission value; you should use the definitions found in *<linux/stat.h>*.
 
@@ -762,9 +821,17 @@ versa
 
 ## Doing It in User Space
 
+- A Unix programmer who's addressing kernel issues for the first time might be nervous about writing a module.
+
+- Writing a user program that reads and writes directly to the device parts may be easier.
+
+<br>
+
 - In this section, we discuss some of the reasons why you might write a driver in user space.
 
 - This book is about kernel-space drivers, however, so we do not go beyond this introductory discussion.
+
+<br>
 
 - The advantages of user-space drivers are:
 
@@ -793,11 +860,15 @@ rent access to a device.
 
 - Note, however, that there is a slow but steady drift toward frame-buffer-based graphics environments, where the X server acts only as a server based on a real kernel-space device driver for actual graphic manipulation.
 
+<br>
+
 - Usually, the writer of a user-space driver implements a server process, taking over from the kernel the task of being the single agent in charge of hardware control.
 
 - Client applications can then connect to the server to perform actual communication with the device; therefore, a smart driver process can allow concurrent access to the device.
 
 - This is exactly how the X server works.
+
+<br>
 
 - But the user-space approach to device driving has a number of drawbacks.
 
@@ -828,6 +899,8 @@ rent access to a device.
 - Interesting applications nonetheless exist: for example, support for SCSI scanner devices (implemented by the SANE package) and CD writers (implemented by cdrecord and other tools).
 
 - In both cases, user-level device drivers rely on the “SCSI generic” kernel driver, which exports low-level SCSI functionality to user-space programs so they can drive their own hardware.
+
+<br>
 
 - One case in which working in user space might make sense is when you are beginning to deal with new and unusual hardware.
 

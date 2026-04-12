@@ -1,0 +1,121 @@
+= Bibliography
+:toc:
+
+* #Most of the information in this book has been extracted from the kernel
+  sources, which are the best documentation about the Linux kernel.#
+
+'''
+
+* Kernel sources can be retrieved from hundreds of FTP sites around the world,
+  so we won't list them here.
+
+'''
+
+* #Version dependencies are best checked by looking at the patches, which are
+  available from the same places where you get the whole source.#
+* The program called _repatch_ might help you in checking how a single file has
+  been modified throughout the different kernel patches; it is available in
+  the source files provided on the O'Reilly FTP site.
+
+== Books
+
+* While the bookstores are full of technical books, there are surprisingly few
+  that are directly relevant to Linux kernel programming.
+* Here is a selection of books found on our shelves.
+
+=== Linux Kernel
+
+.Bovet, Daniel P. and Marco Cesate. _Understanding the Linux Kernel_, Second Edition. Sebastopol, CA: O’Reilly & Associates, Inc. 2003.
+* This book covers the design and implementation of the Linux kernel in great
+  detail.
+* It is more oriented toward providing an understanding of the algorithms used
+  than documenting the kernel API.
+* This book covers the 2.4 kernel but still contains a great deal of useful
+  information.
+
+.Gorman, Mel. _Understanding the Linux Virtual Memory Manager_. Upper Saddle River, NJ: Prentice Hall PTR, 2004.
+* Developers wanting to know more about the Linux virtual memory subsystem may
+  wish to have a look at this book.
+* It is centered around the 2.4 kernel but contains 2.6 information as well.
+
+.Love, Robert. _Linux Kernel Development_. Indianapolis: Sams Publishing, 2004.
+* This book covers Linux kernel programming with a broad scope.
+* It is a reference that should be on every Linux hacker's bookshelf.
+
+.Yaghmour, Karim. _Building Embedded Systems_. Sebastopol, CA: O'Reilly & Associates, Inc. 2003.
+* This book will be useful to those writing Linux code for embedded systems.
+
+### Unix Design and Internals
+
+.Bach, Maurice. _The Design of the Unix Operating System_. Upper Saddle River, NJ: Prentice Hall, 1987.
+* Though quite old, this book covers all the issues related to Unix
+  implementations.
+* It was the main source of inspiration for Linus in the first Linux version.
+
+.Stevens, Richard. _Advanced Programming in the UNIX Environment_. Boston: Addison-Wesley, 1992.
+* Every detail of Unix system calls is described herein, which is a good
+  companion when implementing advanced features in the device methods.
+
+.Stevens, Richard. _Unix Network Programming_. Upper Saddle River, NJ: Prentice Hall PTR, 1990.
+* Perhaps the definitive book on the Unix network programming API.
+
+== Web Sites
+
+* In the fast-moving world of Linux kernel development, the most current
+  information is often found online.
+* The following is our selection of the best web sites as of this writing:
+
+http://www.kernel.org::
+ftp://ftp.kernel.org::
+* This site is the home of Linux kernel development.
+* You'll find the latest kernel release and related information.
+* Note that the FTP site is mirrored throughout the world, so you'll most
+  likely find a mirror near you.
+
+http://www.bkbits.net::
+* This site hosts the source repositories used by a number of prominent kernel
+  developers.
+* In particular, the project called "linus" contains the mainline kernel as
+  maintained by Linus Torvalds.
+* If you are curious about the very latest patches which have been applied to
+  the kernel, this is the place to look.
+
+http://www.tldp.org::
+* The Linux Documentation Project carries a lot of interesting documents
+  called "HOWTOs"; some of them are pretty technical and cover kernel-related
+  topics.
+
+http://www.linux.it/kerneldocs::
+* This page contains many kernel-oriented magazine articles written by
+  Alessandro Rubini.
+* Some of them date back a few years, but they usually still apply; some of
+  them are in Italian, but usually an English translation is available as
+  well.
+
+http://lwn.net::
+* At the risk of seeming self-serving, we point out this news site that, among
+  other things, offers regular kernel development coverage and API change
+  information.
+
+http://www.kerneltraffic.org::
+* Kernel Traffic is a popular site that provides weekly summaries of
+  discussions on the Linux kernel development mailing list.
+
+http://www.kerneltrap.org/::
+* This site picks up occasional interesting developments in the Linux and BSD
+  kernel communities.
+
+http://www.kernelnewbies.org::
+* This site is oriented toward new kernel developers.
+* There is beginning information, a FAQ, and an associated IRC channel for
+  those looking for immediate assistance.
+
+http://janitor.kernelnewbies.org/::
+* The Linux Kernel Janitor project is the place where new kernel programmers
+  can learn how to join in the development effort.
+* A wide range of small, generally simple tasks that need to be done all over
+  the kernel are described here.
+* There is a mailing list that helps new developers get these changes into the
+  main kernel tree.
+* This is a great place for anyone wanting to start doing Linux kernel
+  development but not knowing where to begin.

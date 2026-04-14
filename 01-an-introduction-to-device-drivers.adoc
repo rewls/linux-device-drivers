@@ -287,3 +287,142 @@ image::figure-01-01.png[]
 * The placement of modules in Figure 1-1 covers the most important classes,
   but is far from complete because more and more functionality in Linux is
   being modularized.
+
+== Classes of Devices and Modules
+
+* #The Linux way of looking at devices distinguishes between three fundamental
+  device types.#
+* #Each module usually implements one of these types, and thus is classifiable
+  as a _char module_, a _block module_, or a _network module_.#
+* This division of modules into different types, or classes, is not a rigid
+  one; the programmer can choose to build huge modules implementing different
+  drivers in a single chunk of code.
+* Good programmers, nonetheless, usually create a different module for each
+  new functionality they implement, because #decomposition is a key element of
+  scalability and extendability#.
+
+'''
+
+* The three classes are:
+
+'''
+
+Character devices::
+* #A character (char) device is one that can be accessed as a stream of bytes
+  (like a file); a char driver is in charge of implementing this behavior.#
+* #Such a driver usually implements at least the _open_, _close_, _read_, and
+  _write_ system calls.#
+* The text console (_/dev/console_) and the serial ports (_/dev/ttyS0_ and
+  friends) are examples of char devices, as they are well represented by the
+  stream abstraction.
+* Char devices are accessed by means of filesystem nodes, such as _/dev/tty1_
+  and _/dev/lp0_.
+* The only relevant difference between a char device and a regular file is
+  that you can always move back and forth in the regular file, whereas most
+  char devices are just data channels, which you can only access sequentially.
+* There exist, nonetheless, char devices that look like data areas, and you
+  can move back and forth in them; for instance, this usually applies to frame
+  grabbers, where the applications can access the whole acquired image using
+  _mmap_ or _lseek_.
+
+Block devices::
+* Like char devices, block devices are accessed by filesystem nodes in the
+  _/dev_ directory.
+* A block device is a device (e.g., a disk) that can host a filesystem.
+* In most Unix systems, a block device can only handle I/O operations that
+  transfer one or more whole blocks, which are usually 512 bytes (or a larger
+  power of two) bytes in length.
+* #Linux, instead, allows the application to read and write a block device
+  like a char device -- it permits the transfer of any number of bytes at a
+  time.#
+* #As a result, block and char devices differ only in the way data is managed
+  internally by the kernel, and thus in the kernel/driver software interface.#
+* Like a char device, each block device is accessed through a filesystem node,
+  and the difference between them is transparent to the user.
+* Block drivers have a completely different interface to the kernel than char
+  drivers.
+
+Network interfaces::
+* #Any network transaction is made through an interface, that is, a device
+  that is able to exchange data with other hosts.#
+* #Usually, an interface is a hardware device, but it might also be a pure
+  software device, like the loopback interface.#
+* A network interface is in charge of #sending and receiving data packets#,
+  driven by the network subsystem of the kernel, without knowing how
+  individual transactions map to the actual packets being transmitted.
+* Many network connections (especially those using TCP) are stream-oriented,
+  but network devices are, usually, designed around the transmission and
+  receipt of packets.
+* A network driver knows nothing about individual connections; it only handles
+  packets.
+
+'''
+
+* Not being a stream-oriented device, a network interface isn't easily mapped
+  to a node in the filesystem, as _/dev/tty1_ is.
+* #The Unix way to provide access to interfaces is still by assigning a unique
+  name to them (such as `eth0`)#, but that name doesn't have a corresponding
+  entry in the filesystem.
+* Communication between the kernel and a network device driver is completely
+  different from that used with char and block drivers.
+* Instead of read and write, the kernel calls functions related to packet
+  transmission.
+
+'''
+
+* There are other ways of classifying driver modules that are orthogonal to
+  the above device types.
+* In general, #some types of drivers work with additional layers of kernel
+  support functions for a given type of device.#
+* For example, one can talk of universal serial bus (USB) modules, serial
+  modules, SCSI modules, and so on.
+* Every USB device is driven by a USB module that works with the USB
+  subsystem, but the device itself shows up in the system as a char device (a
+  USB serial port, say), a block device (a USB memory card reader), or a
+  network device (a USB Ethernet interface).
+
+'''
+
+* Other classes of device drivers have been added to the kernel in recent
+  times, including FireWire drivers and I2C drivers.
+* In the same way that they handled USB and SCSI drivers, kernel developers
+  #collected class-wide features# and #exported them to driver implementers#
+  to #avoid duplicating work and bugs#, thus simplifying and strengthening the
+  process of writing such drivers.
+
+'''
+
+* In addition to device drivers, other functionalities, both hardware and
+  software, are modularized in the kernel.
+* One common example is filesystems.
+* A filesystem type determines how information is organized on a block device
+  in order to represent a tree of directories and files.
+* Such an entity is not a device driver, in that there's no explicit device
+  associated with the way the information is laid down; the #filesystem type#
+  is instead a #software driver#, because it maps the low-level data
+  structures to high-level data structures.
+* It is the filesystem that determines how long a filename can be and what
+  information about each file is stored in a directory entry.
+* The filesystem module must implement the lowest level of the system calls
+  that access directories and files, by mapping filenames and paths (as well
+  as other information, such as access modes) to data structures stored in
+  data blocks.
+* Such an interface is completely independent of the actual data transfer to
+  and from the disk (or other medium), which is accomplished by a block device
+  driver.
+
+'''
+
+* If you think of how strongly a Unix system depends on the underlying
+  filesystem, you'll realize that such a software concept is vital to system
+  operation.
+* The ability to decode filesystem information stays at the lowest level of
+  the kernel hierarchy and is of utmost importance; even if you write a block
+  driver for your new CD-ROM, it is useless if you are not able to run `ls` or
+  `cp` on the data it hosts.
+* Linux supports the concept of a filesystem module, whose software interface
+  declares the different operations that can be performed on a filesystem
+  inode, directory, file, and superblock.
+* It's quite unusual for a programmer to actually need to write a filesystem
+  module, because the official kernel already includes code for the most
+  important filesystem types.

@@ -20,7 +20,7 @@ ____
 ** [x] The Role of the Device Driver 2
 ** [x] Splitting the Kernel 4
 ** [x] Classes of Devices and Modules 5
-** [ ] Security Issues 8
+** [x] Security Issues 8
 ** [ ] Version Numbering 10
 ** [ ] License Terms 11
 ** [ ] Joining the Kernel Development Community 12

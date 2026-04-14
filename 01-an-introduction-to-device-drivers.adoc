@@ -426,3 +426,92 @@ Network interfaces::
 * It's quite unusual for a programmer to actually need to write a filesystem
   module, because the official kernel already includes code for the most
   important filesystem types.
+
+== Security Issues
+
+* Security is an increasingly important concern in modern times.
+* We will discuss #security-related issues as they come up throughout the
+  book#.
+* There are a few general concepts, however, that are worth mentioning now.
+
+'''
+
+* #Any security check in the system is enforced by kernel code.#
+* If the kernel has security holes, then the system as a whole has holes.
+* In the official kernel distribution, only an authorized user can load
+  modules; the system call `init_module` checks if the invoking process is
+  authorized to load a module into the kernel.
+* Thus, when running an official kernel, only the superuser,footnote:[
+  Technically, only somebody with the `CAP_SYS_MODULE` capability can perform
+  this operation.
+  We discuss capabilities in Chapter 6. +
+  ] or an intruder who has succeeded in becoming privileged, can exploit the
+  power of privileged code.
+
+'''
+
+* #When possible, driver writers should avoid encoding security policy in their
+  code.#
+* Security is a policy issue that is often best handled at higher levels
+  within the kernel, under the control of the system administrator.
+* There are always exceptions, however.
+* #As a device driver writer, you should be aware of situations in which some
+  types of device access could adversely affect the system as a whole and
+  should provide adequate controls.#
+* For example, device operations that affect #global resources# (such as setting
+  an interrupt line), which could damage the hardware (loading firmware, for
+  example), or that could affect other users (such as setting a default block
+  size on a tape drive), are usually only available to sufficiently privileged
+  users, and #this check must be made in the driver itself#.
+
+'''
+
+* Driver writers must also be careful, of course, to avoid introducing
+  security bugs.
+* The C programming language makes it easy to make several types of errors.
+* Many current security problems are created, for example, by buffer overrun
+  errors, in which the programmer forgets to check how much data is written to
+  a buffer, and data ends up written beyond the end of the buffer, thus
+  overwriting unrelated data.
+* Such errors can compromise the entire system and must be avoided.
+* Fortunately, avoiding these errors is usually relatively easy in the device
+  driver context, in which the interface to the user is narrowly defined and
+  highly controlled.
+
+'''
+
+* Some other general security ideas are worth keeping in mind.
+* #Any input received from user processes should be treated with great
+  suspicion#; never trust it unless you can verify it.
+* Be careful with uninitialized memory; #any memory obtained from the kernel
+  should be zeroed or otherwise initialized before being made available to a
+  user process or device#.
+* Otherwise, information leakage (disclosure of data, passwords, etc.) could
+  result.
+* If your device interprets data sent to it, be sure the user cannot send
+  anything that could compromise the system.
+* Finally, think about #the possible effect of device operations#; if there
+  are specific operations (e.g., reloading the firmware on an adapter board or
+  formatting a disk) that could affect the system, those operations should
+  almost certainly be restricted to privileged users.
+
+'''
+
+* Be careful, also, when #receiving software from third parties#, especially
+  when the kernel is concerned: because everybody has access to the source
+  code, everybody can break and recompile things.
+* Although you can usually trust precompiled kernels found in your
+  distribution, you should avoid running kernels compiled by an untrusted
+  friend -- if you wouldn't run a precompiled binary as root, then you'd
+  better not run a precompiled kernel.
+* For example, a maliciously modified kernel could allow anyone to load a
+  module, thus opening an unexpected back door via `init_module`.
+
+'''
+
+* Note that the Linux kernel can be compiled to have #no module support#
+  whatsoever, thus closing any module-related security holes.
+* In this case, of course, all needed drivers must be built directly into the
+  kernel itself.
+* It is also possible, with 2.2 and later kernels, to disable the loading of
+  kernel modules after system boot via the capability mechanism.

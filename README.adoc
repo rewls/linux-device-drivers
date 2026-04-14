@@ -15,8 +15,9 @@ ____
 
 == Table of Contents
 
-* 1. An Introduction to Device Drivers 1
-** [ ] The Role of the Device Driver 2
+* link:01-an-introduction-to-device-drivers.adoc[1. An Introduction to Device
+  Drivers 1]
+** [x] The Role of the Device Driver 2
 ** [ ] Splitting the Kernel 4
 ** [ ] Classes of Devices and Modules 5
 ** [ ] Security Issues 8

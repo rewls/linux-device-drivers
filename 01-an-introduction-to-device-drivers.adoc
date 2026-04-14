@@ -1,0 +1,192 @@
+= Chapter 1. An Introduction to Device Drivers
+:toc: left
+
+* One of the many advantages of free operating systems, as typified by Linux,
+  is that their internals are open for all to view.
+* The operating system, once a dark and mysterious area whose code was
+  restricted to a small number of programmers, can now be readily examined,
+  understood, and modified by anybody with the requisite skills.
+* Linux has helped to democratize operating systems.
+* #The Linux kernel remains a large and complex body of code, however, and
+  would-be kernel hackers need an entry point where they can approach the code
+  without being overwhelmed by complexity.#
+* #Often, device drivers provide that gateway.#
+
+'''
+
+* Device drivers take on a special role in the Linux kernel.
+* #They are distinct "black boxes" that make a particular piece of hardware
+  respond to a well-defined internal programming interface; they hide
+  completely the details of how the device works.#
+* #User activities are performed by means of a set of standardized calls that
+  are independent of the specific driver; mapping those calls to
+  device-specific operations that act on real hardware is then the role of the
+  device driver.#
+* #This programming interface is such that drivers can be built separately
+  from the rest of the kernel and "plugged in" at runtime when needed.#
+* This modularity makes Linux drivers easy to write, to the point that there
+  are now hundreds of them available.
+
+'''
+
+* There are a number of reasons to be interested in the writing of Linux
+  device drivers.
+* #The rate at which new hardware becomes available (and obsolete!) alone
+  guarantees that driver writers will be busy for the foreseeable future.#
+* Individuals may need to know about drivers in order to gain access to a
+  particular device that is of interest to them.
+* Hardware vendors, by making a Linux driver available for their products, can
+  add the large and growing Linux user base to their potential markets.
+* And the open source nature of the Linux system means that if the driver
+  writer wishes, the source to a driver can be quickly disseminated to
+  millions of users.
+
+'''
+
+* This book teaches you #how to write your own drivers# and #how to hack
+  around in related parts of the kernel#.
+* We have taken a #device-independent approach#; the #programming techniques
+  and interfaces# are presented, whenever possible, without being tied to any
+  specific device.
+* #Each driver is different; as a driver writer, you need to understand your
+  specific device well.#
+* #But most of the principles and basic techniques are the same for all
+  drivers.#
+* This book cannot teach you about your device, but it gives you a handle on
+  the background you need to make your device work.
+
+'''
+
+* As you learn to write drivers, you find out #a lot about the Linux kernel in
+  general#; this may help you understand #how your machine works# and why
+  #things aren't always as fast as you expect or don't do quite what you
+  want#.
+* #We introduce new ideas gradually#, starting off with very simple drivers
+  and building on them; every #new concept is accompanied by sample code# that
+  doesn't need special hardware to be tested.
+
+'''
+
+* This chapter doesn't actually get into writing code.
+* However, we introduce #some background concepts about the Linux kernel# that
+  you'll be glad you know later, when we do launch into programming.
+
+== The Role of the Device Driver
+
+* #As a programmer, you are able to make your own choices about your driver,
+  and choose an acceptable trade-off between the programming time required and
+  the flexibility of the result.#
+* Though it may appear strange to say that a driver is "flexible," we like
+  this word because it emphasizes that #the role of a device driver is
+  providing _mechanism_, not _policy_#.
+
+'''
+
+* #The distinction between mechanism and policy is one of the best ideas
+  behind the Unix design.#
+* Most programming problems can indeed be split into two parts: #"what
+  capabilities are to be provided" (the mechanism)# and #"how those
+  capabilities can be used" (the policy)#.
+* If the two issues are addressed by different parts of the program, or even
+  by different programs altogether, #the software package is much easier to
+  develop and to adapt to particular needs#.
+
+'''
+
+* For example, Unix management of the graphic display is split between the #X
+  server#, which knows the hardware and offers a unified interface to user
+  programs, and #the window and session managers#, which implement a
+  particular policy without knowing anything about the hardware.
+* People can use the same window manager on different hardware, and different
+  users can run different configurations on the same workstation.
+* Even completely different desktop environments, such as KDE and GNOME, can
+  coexist on the same system.
+* Another example is the layered structure of TCP/IP networking: the #operating
+  system# offers the socket abstraction, which implements no policy regarding
+  the data to be transferred, while different #servers# are in charge of the
+  services (and their associated policies).
+* Moreover, a #server like _ftpd_# provides the file transfer mechanism, while
+  users can use whatever #client# they prefer; both command-line and graphic
+  clients exist, and anyone can write a new user interface to transfer files.
+
+'''
+
+* Where drivers are concerned, the same separation of mechanism and policy
+  applies.
+* The #floppy driver# is policy free -- its role is only to show the diskette
+  as a continuous array of data blocks.
+* #Higher levels of the system# provide policies, such as who may access the
+  floppy drive, whether the drive is accessed directly or via a filesystem,
+  and whether users may mount filesystems on the drive.
+* Since different environments usually need to use hardware in different ways,
+  it's important to be as policy free as possible.
+
+'''
+
+* #When writing drivers, a programmer should pay particular attention to this
+  fundamental concept: write kernel code to access the hardware, but don't
+  force particular policies on the user, since different users have different
+  needs.#
+* The driver should deal with making the hardware available, leaving all the
+  issues about how to use the hardware to the applications.
+* A driver, then, is flexible if it offers access to the hardware capabilities
+  without adding constraints.
+* Sometimes, however, some policy decisions must be made.
+* For example, a digital I/O driver may only offer byte-wide access to the
+  hardware in order to avoid the extra code needed to handle individual bits.
+
+'''
+
+* You can also look at your driver from a different perspective: it is a
+  software layer that lies between the applications and the actual device.
+* #This privileged role of the driver allows the driver programmer to choose
+  exactly how the device should appear: different drivers can offer different
+  capabilities, even for the same device.#
+* The actual driver design should be a balance between many different
+  considerations.
+* For instance, a single device may be used concurrently by different
+  programs, and the driver programmer has complete freedom to determine how to
+  handle #concurrency#.
+* You could implement #memory mapping# on the device independently of its
+  hardware capabilities, or you could provide a #user library# to help
+  application programmers implement new policies on top of the available
+  primitives, and so forth.
+* One major consideration is the trade-off between the desire to present the
+  user with as #many options# as possible and the #time# you have to write the
+  driver, as well as the need to keep things #simple# so that errors don't
+  creep in.
+
+'''
+
+* Policy-free drivers have a number of typical characteristics.
+* These include support for both #synchronous and asynchronous operation#, the
+  ability to be #opened multiple times#, the ability to exploit #the full
+  capabilities of the hardware#, and the #lack of software layers to "simplify
+  things"# or provide #policy-related operations#.
+* Drivers of this sort not only work better for their end users, but also turn
+  out to be easier to write and maintain as well.
+* Being policy-free is actually a common target for software designers.
+
+'''
+
+* #Many device drivers, indeed, are released together with user programs to
+  help with configuration and access to the target device.#
+* #Those programs can range from simple utilities to complete graphical
+  applications.#
+* Examples include the _tunelp_ program, which adjusts how the parallel port
+  printer driver operates, and the graphical _cardctl_ utility that is part of
+  the PCMCIA driver package.
+* Often a client library is provided as well, which provides capabilities that
+  do not need to be implemented as part of the driver itself.
+
+'''
+
+* #The scope of this book is the kernel, so we try not to deal with policy
+  issues or with application programs or support libraries.#
+* Sometimes we talk about different policies and how to support them, but we
+  won't go into much detail about programs using the device or the policies
+  they enforce.
+* #You should understand, however, that user programs are an integral part of
+  a software package and that even policy-free packages are distributed with
+  configuration files that apply a default behavior to the underlying
+  mechanisms.#

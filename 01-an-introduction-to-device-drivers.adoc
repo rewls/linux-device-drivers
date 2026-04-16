@@ -515,3 +515,98 @@ Network interfaces::
   kernel itself.
 * It is also possible, with 2.2 and later kernels, to disable the loading of
   kernel modules after system boot via the capability mechanism.
+
+== Version Numbering
+
+* Before digging into programming, we should comment on the version numbering
+  scheme used in Linux and which versions are covered by this book.
+
+'''
+
+* First of all, note that every software package used in a Linux system has
+  its own release number, and there are often interdependencies across them:
+  you need a particular version of one package to run a particular version of
+  another package.
+* The creators of Linux distributions usually handle the messy problem of
+  matching packages, and the user who installs from a prepackaged distribution
+  doesn't need to deal with version numbers.
+* Those who replace and upgrade system software, on the other hand, are on
+  their own in this regard.
+* Fortunately, almost all modern distributions support the upgrade of single
+  packages by checking interpackage dependencies; the distribution's package
+  manager generally does not allow an upgrade until the dependencies are
+  satisfied.
+
+'''
+
+* To run the examples we introduce during the discussion, you won't need
+  particular versions of any tool beyond what the 2.6 kernel requires; any
+  recent Linux distribution can be used to run our examples.
+* #We won't detail specific requirements, because the file
+  Documentation/Changes in your kernel sources is the best source of such
+  information if you experience any problems.#
+
+'''
+
+* As far as the kernel is concerned, #the even-numbered kernel versions (i.e.,
+  2.6.x) are the stable ones# that are intended for general distribution.
+* #The odd versions (such as 2.7.x), on the contrary, are development
+  snapshots and are quite ephemeral#; the latest of them represents the
+  current status of development, but becomes obsolete in a few days or so.
+
+'''
+
+* This book covers #Version 2.6 of the kernel#.
+* Our focus has been to show all the features available to device driver
+  writers in 2.6.10, the current version at the time we are writing.
+* This edition of the book does not cover prior versions of the kernel.
+* For those of you who are interested, the second edition covered Versions 2.0
+  through 2.4 in detail.
+* That edition is still available online at http://lwn.net/Kernel/LDD2/.
+
+'''
+
+* Kernel programmers should be aware that the development process changed with
+  2.6.
+* The 2.6 series is now accepting changes that previously would have been
+  considered too large for a "stable" kernel.
+* Among other things, that means that #internal kernel programming interfaces
+  can change#, thus potentially obsoleting parts of this book; for this
+  reason, the sample code accompanying the text is known to work with 2.6.10,
+  but some modules don't compile under earlier versions.
+* Programmers wanting to keep up with kernel programming changes are
+  encouraged to join the mailing lists and to make use of the web sites listed
+  in the bibliography.
+* There is also a web page maintained at
+  http://lwn.net/Articles/2.6-kernel-api/, which contains information about
+  API changes that have happened since this book was published.
+
+'''
+
+* This text doesn't talk specifically about odd-numbered kernel versions.
+* General users never have a reason to run development kernels.
+* Developers experimenting with new features, however, want to be running the
+  latest development release.
+* They usually keep upgrading to the most recent version to pick up bug fixes
+  and new implementations of features.
+* Note, however, that #there's no guarantee on experimental kernels,footnote:[
+  Note that there's no guarantee on even-numbered kernels as well, unless you
+  rely on a commercial provider that grants its own warranty.
+  ] and nobody helps you if you have problems due to a bug in a noncurrent
+  odd-numbered kernel#.
+* #Those who run odd-numbered versions of the kernel are usually skilled
+  enough to dig in the code without the need for a textbook#, which is another
+  reason why we don't talk about development kernels here.
+
+'''
+
+* Another feature of Linux is that it is a platform-independent operating
+  system, not just "a Unix clone for PC clones" anymore: it currently supports
+  some 20 architectures.
+* This book is #platform independent# as far as possible, and all the code
+  samples have been tested on at least the x86 and x86-64 platforms.
+* Because the code has been tested on both 32-bit and 64-bit processors, it
+  should compile and run on all other platforms.
+* As you might expect, the code samples that rely on particular hardware don't
+  work on all the supported platforms, but this is always stated in the source
+  code.

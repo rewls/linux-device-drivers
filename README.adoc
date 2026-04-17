@@ -23,7 +23,7 @@ ____
 ** [x] Security Issues 8
 ** [x] Version Numbering 10
 ** [x] License Terms 11
-** [ ] Joining the Kernel Development Community 12
+** [x] Joining the Kernel Development Community 12
 ** [ ] Overview of the Book 12
 
 * 2. Building and Running Modules 15

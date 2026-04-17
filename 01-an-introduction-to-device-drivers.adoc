@@ -667,3 +667,35 @@ Network interfaces::
 * All the programs are available at
   _ftp://ftp.ora.com/pub/examples/linux/drivers/_, and the exact license terms
   are stated in the _LICENSE_ file in the same directory.
+
+== Joining the Kernel Development Community
+
+* As you begin writing modules for the Linux kernel, you become part of a
+  larger community of developers.
+* Within that community, you can find not only people engaged in similar work,
+  but also a group of highly committed engineers working toward making Linux a
+  better system.
+* #These people can be a source of help, ideas, and critical review as
+  well -- they will be the first people you will likely turn to when you are
+  looking for testers for a new driver.#
+
+'''
+
+* The central gathering point for Linux kernel developers is the
+  _linux-kernel_ mailing list.
+* #All major kernel developers, from Linus Torvalds on down, subscribe to this
+  list.#
+* Please note that the list is not for the faint of heart: #traffic as of this
+  writing can run up to 200 messages per day or more.#
+* Nonetheless, #following this list is essential for those who are interested
+  in kernel development; it also can be a top-quality resource for those in
+  need of kernel development help.#
+
+'''
+
+* #To join the linux-kernel list, follow the instructions found in the
+  linux-kernel mailing list FAQ: _http://www.tux.org/lkml_.#
+* Read the rest of the FAQ while you are at it; there is a great deal of
+  useful information there.
+* Linux kernel developers are busy people, and they are much more inclined to
+  help people who have clearly done their homework first.

@@ -699,3 +699,88 @@ Network interfaces::
   useful information there.
 * Linux kernel developers are busy people, and they are much more inclined to
   help people who have clearly done their homework first.
+
+== Overview of the Book
+
+* From here on, we enter the world of kernel programming.
+* Chapter 2 introduces #modularization#, explaining the secrets of the art and
+  showing the code for running modules.
+* Chapter 3 talks about #char drivers# and shows the complete code for a
+  memory-based device driver that can be read and written for fun.
+* #Using memory as the hardware base for the device allows anyone to run the
+  sample code without the need to acquire special hardware.#
+
+'''
+
+* #Debugging techniques# are vital tools for the programmer and are introduced
+  in Chapter 4.
+* Equally important for those who would hack on contemporary kernels is the
+  #management of concurrency and race conditions#.
+* Chapter 5 concerns itself with the problems posed by concurrent access to
+  resources and introduces the Linux mechanisms for controlling concurrency.
+
+'''
+
+* With debugging and concurrency management skills in place, we move to
+  advanced features of char drivers, such as #blocking operations#, the use of
+  select, and the important ioctl call; these topics are the subject of
+  Chapter 6.
+
+'''
+
+* Before dealing with hardware management, we dissect a few more of the
+  kernel's software interfaces: Chapter 7 shows how #time# is managed in the
+  kernel, and Chapter 8 explains #memory allocation#.
+
+'''
+
+* Next we focus on hardware.
+* Chapter 9 describes the #management of I/O ports and memory buffers# that
+  live on the device; after that comes #interrupt handling#, in Chapter 10.
+* Unfortunately, #not everyone is able to run the sample code for these
+  chapters, because some hardware support is actually needed to test the
+  software interface interrupts#.
+* We've tried our best to keep required hardware support to a minimum, but you
+  still need some simple hardware, such as a standard parallel port, to work
+  with the sample code for these chapters.
+
+'''
+
+* Chapter 11 covers #the use of data types in the kernel and the writing of
+  portable code#.
+
+'''
+
+* The second half of the book is dedicated to more advanced topics.
+* We start by getting deeper into the hardware and, in particular, the
+  functioning of specific peripheral buses.
+* Chapter 12 covers the details of #writing drivers for PCI devices#, and
+  Chapter 13 examines the #API for working with USB devices#.
+
+'''
+
+* With an understanding of peripheral buses in place, we can take a detailed
+  look at the Linux device model, which is the abstraction layer used by the
+  kernel to describe the hardware and software resources it is managing.
+* Chapter 14 is #a bottom-up look at the device model infrastructure#,
+  starting with the kobject type and working up from there.
+* It covers the integration of the device model with real hardware; it then
+  uses that knowledge to cover topics like hot-pluggable devices and power
+  management.
+
+'''
+
+* In Chapter 15, we take a diversion into #Linux memory management#.
+* This chapter shows how to map kernel memory into user space (the _mmap_
+  system call), map user memory into kernel space (with _get_user_pages_), and
+  how to map either kind of memory into device space (to perform direct memory
+  access [DMA] operations).
+
+'''
+
+* Our understanding of memory will be useful for the following two chapters,
+  which cover the other major driver classes.
+* Chapter 16 introduces #block drivers# and shows how they are different from
+  the char drivers we have worked with so far.
+* Then Chapter 17 gets into the writing of #network drivers#.
+* We finish up with a discussion of serial drivers and a bibliography.

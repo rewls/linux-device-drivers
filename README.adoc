@@ -24,7 +24,7 @@ ____
 ** [x] Version Numbering 10
 ** [x] License Terms 11
 ** [x] Joining the Kernel Development Community 12
-** [ ] Overview of the Book 12
+** [x] Overview of the Book 12
 
 * 2. Building and Running Modules 15
 ** [ ] Setting Up Your Test System 15

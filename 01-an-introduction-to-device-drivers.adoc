@@ -610,3 +610,60 @@ Network interfaces::
 * As you might expect, the code samples that rely on particular hardware don't
   work on all the supported platforms, but this is always stated in the source
   code.
+
+== License Terms
+
+* Linux is licensed under Version 2 of the GNU General Public License (GPL), a
+  document devised for the GNU project by the Free Software Foundation.
+* #The GPL allows anybody to redistribute, and even sell, a product covered by
+  the GPL, as long as the recipient has access to the source and is able to
+  exercise the same rights.#
+* #Additionally, any software product derived from a product covered by the
+  GPL must, if it is redistributed at all, be released under the GPL.#
+
+'''
+
+* The main goal of such a license is to allow the growth of knowledge by
+  permitting everybody to modify programs at will; at the same time, people
+  selling software to the public can still do their job.
+* Despite this simple objective, there's a #never-ending discussion# about the
+  GPL and its use.
+* If you want to read the license, you can find it in several places in your
+  system, including the top directory of your kernel source tree in the
+  _COPYING_ file.
+
+'''
+
+* Vendors often ask whether they can distribute kernel modules in binary form
+  only.
+* The answer to that question has been deliberately left ambiguous.
+* Distribution of binary modules -- as long as they adhere to the published
+  kernel interface -- has been tolerated so far.
+* But the copyrights on the kernel are held by many developers, and not all of
+  them agree that kernel modules are not derived products.
+* If you or your employer wish to distribute kernel modules under a nonfree
+  license, you really need to discuss the situation with your legal counsel.
+* Please note also that the kernel developers have no qualms against breaking
+  binary modules between kernel releases, even in the middle of a stable
+  kernel series.
+* #If it is at all possible, both you and your users are better off if you
+  release your module as free software.#
+
+'''
+
+* If you want your code to go into the mainline kernel, or if your code
+  requires patches to the kernel, you must use a GPL-compatible license as
+  soon as you release the code.
+* Although personal use of your changes doesn't force the GPL on you, if you
+  distribute your code, you must include the source code in the
+  distribution -- people acquiring your package must be allowed to rebuild the
+  binary at will.
+
+'''
+
+* As far as this book is concerned, most of the code is freely
+  redistributable, either in source or binary form, and neither we nor
+  O'Reilly retain any right on any derived works.
+* All the programs are available at
+  _ftp://ftp.ora.com/pub/examples/linux/drivers/_, and the exact license terms
+  are stated in the _LICENSE_ file in the same directory.

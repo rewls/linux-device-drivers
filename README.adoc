@@ -22,7 +22,7 @@ ____
 ** [x] Classes of Devices and Modules 5
 ** [x] Security Issues 8
 ** [x] Version Numbering 10
-** [ ] License Terms 11
+** [x] License Terms 11
 ** [ ] Joining the Kernel Development Community 12
 ** [ ] Overview of the Book 12
 

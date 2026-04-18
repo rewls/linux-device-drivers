@@ -26,8 +26,8 @@ ____
 ** [x] Joining the Kernel Development Community 12
 ** [x] Overview of the Book 12
 
-* 2. Building and Running Modules 15
-** [ ] Setting Up Your Test System 15
+* link:02-building-and-running-modules[2. Building and Running Modules 15]
+** [x] Setting Up Your Test System 15
 ** [ ] The Hello World Module 16
 ** [ ] Kernel Modules Versus Applications 18
 ** [ ] Compiling and Loading 22

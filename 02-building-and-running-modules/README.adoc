@@ -1,0 +1,79 @@
+= Chapter 2. Building and Running Modules
+:toc: left
+
+* It's almost time to begin programming.
+* This chapter introduces #all the essential concepts about modules and kernel
+  programming#.
+* In these few pages, we build and run a complete (if relatively useless)
+  module, and look at some of the basic code shared by all modules.
+* Developing such expertise is an essential foundation for any kind of
+  modularized driver.
+* To avoid throwing in too many concepts at once, this chapter talks only
+  about modules, without referring to any specific device class.
+
+'''
+
+* All the kernel items (functions, variables, header files, and macros) that
+  are introduced here are described in a reference section at the end of the
+  chapter.
+
+== Setting Up Your Test System
+
+* Starting with this chapter, we present example modules to demonstrate
+  programming concepts.
+* (All of these examples are available on O'Reilly's FTP site, as explained in
+  Chapter 1.)
+* Building, loading, and modifying these examples are a good way to improve
+  your understanding of how drivers work and interact with the kernel.
+
+'''
+
+* The example modules should work with almost any 2.6.x kernel, including
+  those provided by distribution vendors.
+* However, #we recommend that you obtain a "mainline" kernel directly from the
+  kernel.org mirror network, and install it on your system#.
+* Vendor kernels can be heavily patched and divergent from the mainline; at
+  times, #vendor patches can change the kernel API as seen by device
+  drivers#.
+* If you are writing a driver that must work on a particular distribution, you
+  will certainly want to build and test against the relevant kernels.
+* But, for the purpose of learning about driver writing, a standard kernel is
+  best.
+
+'''
+
+* Regardless of the origin of your kernel, building modules for 2.6.x requires
+  that you have a configured and built kernel tree on your system.
+* This requirement is a change from previous versions of the kernel, where a
+  current set of header files was sufficient.
+* 2.6 modules are linked against object files found in the kernel source tree;
+  the result is a more robust module loader, but also the requirement that
+  those object files be available.
+* So your first order of business is to come up with a kernel source tree
+  (either from the kernel.org network or your distributor's kernel source
+  package), build a new kernel, and install it on your system.
+* For reasons we'll see later, life is generally easiest if you are actually
+  running the target kernel when you build your modules, though this is not
+  required.
+
+[WARNING]
+====
+* You should also give some thought to where you do your module
+  experimentation, development, and testing.
+* We have done our best to make our example modules safe and correct, but the
+  possibility of bugs is always present.
+* Faults in kernel code can bring about the demise of a user process or,
+  occasionally, the entire system.
+* They do not normally create more serious problems, such as disk corruption.
+* Nonetheless, it is advisable to do your kernel experimentation on a system
+  that does not contain data that you cannot afford to lose, and that does not
+  perform essential services.
+* #Kernel hackers typically keep a "sacrificial" system around for the purpose
+  of testing new code.#
+====
+
+* So, if you do not yet have a suitable system with a configured and built
+  kernel source tree on disk, now would be a good time to set that up.
+* We'll wait.
+* Once that task is taken care of, you'll be ready to start playing with
+  kernel modules.
